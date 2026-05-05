@@ -1,0 +1,69 @@
+site_name: JEDx Documentation
+site_description: CAR and Collector Service Software documentation
+site_url: https://vinceparedes.github.io/jedx-docs/
+repo_url: https://github.com/vinceparedes/jedx-docs
+repo_name: vinceparedes/jedx-docs
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.top
+    - navigation.indexes
+    - toc.follow
+    - content.code.copy
+    - content.action.edit
+    - search.suggest
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Requirements: requirements.md
+  - Architecture: architecture.md
+  - SAM Templates:
+      - Overview: sam-templates/index.md
+      - CAR Quickstart: sam-templates/car-quickstart.md
+      - CAR Walkthrough: sam-templates/car-walkthrough.md
+      - Collector Quickstart: sam-templates/collector-quickstart.md
+      - Collector Walkthrough: sam-templates/collector-walkthrough.md
+      - Next Steps Checklist: sam-templates/next-steps-checklist.md
+      - CAR Annotated YAML: sam-templates/template-car-annotated.md
+      - Collector Annotated YAML: sam-templates/template-collector-annotated.md
+  - AI-Generated Packages:
+      - Overview: ai-generated/index.md
+      - CAR Package: ai-generated/car.md
+      - Collector Package: ai-generated/collector.md
