@@ -67,3 +67,5 @@ nav:
       - Overview: ai-generated/index.md
       - CAR Package: ai-generated/car.md
       - Collector Package: ai-generated/collector.md
+  - Schemas: schemas.md
+  - Sample Data: sample-data.md
