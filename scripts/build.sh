@@ -320,6 +320,31 @@ build_ai_package() {
 build_ai_package "${SRC}/other_docs_ai_gen/car_docs_package"       "${AI_OUT}/car.md"       "CAR Service AI-Generated Package"
 build_ai_package "${SRC}/other_docs_ai_gen/collector_docs_package" "${AI_OUT}/collector.md" "Collector Service AI-Generated Package"
 
+# The README text inside each AI-generated page mentions PDF filenames as
+# plain text (e.g. "**collector_template_walkthrough.pdf**"). Turn each
+# mention into a link if the PDF was copied into assets/pdfs/.
+link_pdf_mentions() {
+  python3 - "$1" "${ASSETS}/pdfs" <<'PY'
+import os, re, sys, pathlib
+md_path, pdfs_dir = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
+pdf_names = sorted({p.name for p in pdfs_dir.iterdir() if p.suffix.lower() == '.pdf'},
+                   key=len, reverse=True)
+text = md_path.read_text()
+rel = os.path.relpath(pdfs_dir, md_path.parent)
+for name in pdf_names:
+    esc = re.escape(name)
+    # Skip if already linked (avoid double-linking)
+    text = re.sub(rf'(?<!\]\()(?<!\[)\*\*{esc}\*\*(?!\])',
+                  f'**[{name}]({rel}/{name})**', text)
+    text = re.sub(rf'(?<!\]\()(?<!\[)`{esc}`(?!\])',
+                  f'[`{name}`]({rel}/{name})', text)
+md_path.write_text(text)
+PY
+}
+
+link_pdf_mentions "${AI_OUT}/car.md"
+link_pdf_mentions "${AI_OUT}/collector.md"
+
 # AI-generated section index
 cat > "${AI_OUT}/index.md" <<'EOF'
 # AI-Generated Packages

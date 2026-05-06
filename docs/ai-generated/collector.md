@@ -10,9 +10,9 @@ This bundle explains the collector service’s SAM template and data flow.
 - **template-collector.yaml** – original template
 - **template-collector_annotated.yaml** – annotated copy with inline comments
 - **collector_architecture_diagram.png** – high-level diagram
-- **collector_architecture_diagram.pdf** – printable diagram
-- **collector_template_walkthrough.pdf** – plain-English walkthrough
-- **collector_template_quickstart.pdf** – one-page quickstart
+- **[collector_architecture_diagram.pdf](../assets/pdfs/collector_architecture_diagram.pdf)** – printable diagram
+- **[collector_template_walkthrough.pdf](../assets/pdfs/collector_template_walkthrough.pdf)** – plain-English walkthrough
+- **[collector_template_quickstart.pdf](../assets/pdfs/collector_template_quickstart.pdf)** – one-page quickstart
 
 ## Data Flow
 Client → API Gateway → **JedxCollectorApiFunction** → **JedxCollectorInputStream (Kinesis)** → **CollectorValidationFunction** → **S3 success/error** + **DynamoDB**.
