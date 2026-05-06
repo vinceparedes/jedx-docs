@@ -7,9 +7,9 @@
 This bundle explains the collector service’s SAM template and data flow.
 
 ## Files
-- **template-collector.yaml** – original template
-- **template-collector_annotated.yaml** – annotated copy with inline comments
-- **collector_architecture_diagram.png** – high-level diagram
+- **[template-collector.yaml](#template-collector-yaml)** – original template
+- **[template-collector_annotated.yaml](#template-collector-annotated-yaml)** – annotated copy with inline comments
+- **[collector_architecture_diagram.png](#collector-architecture-diagram-png)** – high-level diagram
 - **[collector_architecture_diagram.pdf](../assets/pdfs/collector_architecture_diagram.pdf)** – printable diagram
 - **[collector_template_walkthrough.pdf](../assets/pdfs/collector_template_walkthrough.pdf)** – plain-English walkthrough
 - **[collector_template_quickstart.pdf](../assets/pdfs/collector_template_quickstart.pdf)** – one-page quickstart
@@ -23,15 +23,15 @@ Record/Records/User endpoints interact with S3 and DynamoDB as appropriate.
 - Tighten IAM policies to least privilege and scope S3 access to prefixes when possible.
 
 
-## Architecture Diagram
+## Architecture Diagram { #collector-architecture-diagram-png }
 
 ![collector_architecture_diagram.png](../assets/images/ai-generated/collector_docs_package/collector_architecture_diagram.png)
 
-## collector_architecture_diagram.pdf
+## collector_architecture_diagram.pdf { #collector-architecture-diagram-pdf }
 
 [:material-file-pdf-box: Download PDF](../assets/pdfs/collector_architecture_diagram.pdf){ .md-button }
 
-## `template-collector.yaml`
+## `template-collector.yaml` { #template-collector-yaml }
 
 ```yaml
 AWSTemplateFormatVersion: '2010-09-09'
@@ -301,7 +301,7 @@ Outputs:
 
 ```
 
-## `template-collector_annotated.yaml`
+## `template-collector_annotated.yaml` { #template-collector-annotated-yaml }
 
 ```yaml
 # Annotated SAM Template: jedx-collector

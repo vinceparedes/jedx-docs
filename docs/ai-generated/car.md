@@ -8,17 +8,17 @@ This repository/package contains documentation and supporting artifacts for the 
 
 ## Contents
 
-- **template-car.yaml**  
+- **[template-car.yaml](#template-car-yaml)**  
   Original AWS SAM template file.
 
-- **sam_template_doc.yaml**  
+- **[sam_template_doc.yaml](#sam-template-doc-yaml)**  
   Annotated YAML version of the SAM template with inline comments explaining each section.
 
-- **sam_architecture_diagram.png**  
+- **[sam_architecture_diagram.png](#sam-architecture-diagram-png)**  
   Diagram of the system architecture showing data flow:  
   *S3 → Lambda → Kinesis → Validation Lambda → S3/DynamoDB, and API Gateway → Lambda functions.*
 
-- **sam_template_walkthrough.pdf**  
+- **[sam_template_walkthrough.pdf](../assets/pdfs/car_template_walkthrough.pdf)**  
   Plain-English walkthrough of the SAM template describing each resource and how they fit together.
 
 - **README.txt**  
@@ -26,10 +26,10 @@ This repository/package contains documentation and supporting artifacts for the 
 
 ## Usage
 
-1. Review the annotated YAML (`sam_template_doc.yaml`) to understand how the resources are defined.
-2. Use the architecture diagram (`sam_architecture_diagram.png`) for a high-level view of the pipeline and API surface.
-3. Refer to the walkthrough (`sam_template_walkthrough.pdf`) for a detailed explanation of each resource.
-4. Use the original `template-car.yaml` for deployment with AWS SAM/CloudFormation.
+1. Review the annotated YAML ([`sam_template_doc.yaml`](#sam-template-doc-yaml)) to understand how the resources are defined.
+2. Use the architecture diagram ([`sam_architecture_diagram.png`](#sam-architecture-diagram-png)) for a high-level view of the pipeline and API surface.
+3. Refer to the walkthrough ([`sam_template_walkthrough.pdf`](../assets/pdfs/car_template_walkthrough.pdf)) for a detailed explanation of each resource.
+4. Use the original [`template-car.yaml`](#template-car-yaml) for deployment with AWS SAM/CloudFormation.
 
 ## Notes
 
@@ -41,17 +41,17 @@ This repository/package contains documentation and supporting artifacts for the 
 Generated documentation package for internal use and reference.
 
 
-## Architecture Diagram
+## Architecture Diagram { #sam-architecture-diagram-png }
 
 ![sam_architecture_diagram.png](../assets/images/ai-generated/car_docs_package/sam_architecture_diagram.png)
 
-## `sam_template_doc.yaml`
+## `sam_template_doc.yaml` { #sam-template-doc-yaml }
 
 ```yaml
 <annotated content already in textdoc>
 ```
 
-## `template-car.yaml`
+## `template-car.yaml` { #template-car-yaml }
 
 ```yaml
 AWSTemplateFormatVersion: '2010-09-09'

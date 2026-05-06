@@ -272,12 +272,15 @@ EOF
 echo "Building AI-generated section..."
 AI_OUT="${DOCS}/ai-generated"
 
+filename_slug() {
+  python3 -c "import re,sys; n=sys.argv[1]; print(re.sub(r'[^a-z0-9-]+','-',n.lower()).strip('-'))" "$1"
+}
+
 build_ai_package() {
   local pkg_dir="$1" md_out="$2" title="$3"
   local md_dir; md_dir="$(dirname "${md_out}")"
   {
     printf '# %s\n\n' "${title}"
-    # Include the package's README (.md preferred, falls back to .txt)
     local readme=""
     for cand in "${pkg_dir}"/README*.md "${pkg_dir}"/README*.txt; do
       [[ -f "${cand}" ]] && { readme="${cand}"; break; }
@@ -287,30 +290,30 @@ build_ai_package() {
       cat "${readme}"
       printf '\n\n'
     fi
-    # Embed any architecture diagram images (PNG)
     local img_subdir="ai-generated/$(basename "${pkg_dir}")"
     local img_dir="${ASSETS}/images/${img_subdir}"
     mkdir -p "${img_dir}"
     for png in "${pkg_dir}"/*.png; do
       [[ -f "${png}" ]] || continue
       local name; name="$(basename "${png}")"
+      local anchor; anchor="$(filename_slug "${name}")"
       cp "${png}" "${img_dir}/${name}"
       local rel; rel="$(python3 -c "import os; print(os.path.relpath('${img_dir}/${name}', '${md_dir}'))")"
-      printf '## Architecture Diagram\n\n![%s](%s)\n\n' "${name}" "${rel}"
+      printf '## Architecture Diagram { #%s }\n\n![%s](%s)\n\n' "${anchor}" "${name}" "${rel}"
     done
-    # Embed any PDF diagrams as download links
     for pdf in "${pkg_dir}"/*.pdf; do
       [[ -f "${pdf}" ]] || continue
       local name; name="$(basename "${pdf}")"
+      local anchor; anchor="$(filename_slug "${name}")"
       cp "${pdf}" "${ASSETS}/pdfs/${name}"
       local rel; rel="$(python3 -c "import os; print(os.path.relpath('${ASSETS}/pdfs/${name}', '${md_dir}'))")"
-      printf '## %s\n\n[:material-file-pdf-box: Download PDF](%s){ .md-button }\n\n' "${name}" "${rel}"
+      printf '## %s { #%s }\n\n[:material-file-pdf-box: Download PDF](%s){ .md-button }\n\n' "${name}" "${anchor}" "${rel}"
     done
-    # Embed YAMLs as fenced code blocks
     for yaml in "${pkg_dir}"/*.yaml; do
       [[ -f "${yaml}" ]] || continue
       local name; name="$(basename "${yaml}")"
-      printf '## `%s`\n\n```yaml\n' "${name}"
+      local anchor; anchor="$(filename_slug "${name}")"
+      printf '## `%s` { #%s }\n\n```yaml\n' "${name}" "${anchor}"
       cat "${yaml}"
       printf '\n```\n\n'
     done
@@ -320,30 +323,66 @@ build_ai_package() {
 build_ai_package "${SRC}/other_docs_ai_gen/car_docs_package"       "${AI_OUT}/car.md"       "CAR Service AI-Generated Package"
 build_ai_package "${SRC}/other_docs_ai_gen/collector_docs_package" "${AI_OUT}/collector.md" "Collector Service AI-Generated Package"
 
-# The README text inside each AI-generated page mentions PDF filenames as
-# plain text (e.g. "**collector_template_walkthrough.pdf**"). Turn each
-# mention into a link if the PDF was copied into assets/pdfs/.
-link_pdf_mentions() {
+# Convert filename mentions in the embedded READMEs (e.g. "**foo.pdf**",
+# "`bar.yaml`") into clickable links. PDFs link to the asset in assets/pdfs/;
+# YAML/PNG/JPG mentions link to the on-page anchor of the embedded section
+# (only when that anchor actually exists). Honors PDF aliases for source-doc
+# naming mismatches.
+link_filename_mentions() {
   python3 - "$1" "${ASSETS}/pdfs" <<'PY'
 import os, re, sys, pathlib
-md_path, pdfs_dir = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
-pdf_names = sorted({p.name for p in pdfs_dir.iterdir() if p.suffix.lower() == '.pdf'},
-                   key=len, reverse=True)
+
+md_path = pathlib.Path(sys.argv[1])
+pdfs_dir = pathlib.Path(sys.argv[2])
+
+PDF_ALIASES = {
+    'sam_template_walkthrough.pdf': 'car_template_walkthrough.pdf',
+}
+
+def slug(name):
+    return re.sub(r'[^a-z0-9-]+', '-', name.lower()).strip('-')
+
 text = md_path.read_text()
-rel = os.path.relpath(pdfs_dir, md_path.parent)
-for name in pdf_names:
-    esc = re.escape(name)
-    # Skip if already linked (avoid double-linking)
-    text = re.sub(rf'(?<!\]\()(?<!\[)\*\*{esc}\*\*(?!\])',
-                  f'**[{name}]({rel}/{name})**', text)
-    text = re.sub(rf'(?<!\]\()(?<!\[)`{esc}`(?!\])',
-                  f'[`{name}`]({rel}/{name})', text)
-md_path.write_text(text)
+rel_pdfs = os.path.relpath(pdfs_dir, md_path.parent)
+pdf_names = {p.name for p in pdfs_dir.iterdir() if p.suffix.lower() == '.pdf'}
+existing_anchors = set(re.findall(r'\{\s*#([a-z0-9-]+)\s*\}', text))
+
+filename_re = re.compile(r'(\*\*|`)([\w.\-]+\.(pdf|yaml|yml|png|jpg))\1', re.IGNORECASE)
+
+def linkify(m):
+    delim, name, ext = m.group(1), m.group(2), m.group(3).lower()
+    target = None
+    if ext == 'pdf':
+        actual = PDF_ALIASES.get(name, name)
+        if actual in pdf_names:
+            target = f'{rel_pdfs}/{actual}'
+    else:
+        s = slug(name)
+        if s in existing_anchors:
+            target = f'#{s}'
+    if not target:
+        return m.group(0)
+    if delim == '`':
+        return f'[`{name}`]({target})'
+    return f'**[{name}]({target})**'
+
+# Process line-by-line so headings and fenced-code lines stay untouched.
+out_lines = []
+in_fence = False
+for ln in text.splitlines():
+    stripped = ln.lstrip()
+    if stripped.startswith('```'):
+        in_fence = not in_fence
+        out_lines.append(ln); continue
+    if in_fence or stripped.startswith('#'):
+        out_lines.append(ln); continue
+    out_lines.append(filename_re.sub(linkify, ln))
+md_path.write_text('\n'.join(out_lines) + '\n')
 PY
 }
 
-link_pdf_mentions "${AI_OUT}/car.md"
-link_pdf_mentions "${AI_OUT}/collector.md"
+link_filename_mentions "${AI_OUT}/car.md"
+link_filename_mentions "${AI_OUT}/collector.md"
 
 # AI-generated section index
 cat > "${AI_OUT}/index.md" <<'EOF'
