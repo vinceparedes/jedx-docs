@@ -112,6 +112,46 @@ demote_extra_h1s "${DOCS}/index.md"
 demote_extra_h1s "${DOCS}/requirements.md"
 demote_extra_h1s "${DOCS}/architecture.md"
 
+# Pandoc emits <img> tags (to preserve docx sizing). MkDocs only rewrites paths
+# in markdown image syntax — not raw HTML — so under use_directory_urls the
+# <img> src would resolve to <page>/assets/... and 404. Convert to ![alt](src)
+# and translate the inline width style into an attr_list pixel width.
+img_to_markdown() {
+  python3 - "$1" <<'PY'
+import re, sys, pathlib
+p = pathlib.Path(sys.argv[1])
+text = p.read_text()
+img_re = re.compile(r'<img\s+([^>]*?)/?>', re.IGNORECASE | re.DOTALL)
+attr_re = re.compile(r'(\w+)\s*=\s*"([^"]*)"')
+width_re = re.compile(r'width:\s*([\d.]+)\s*(in|px|cm|mm|%|em|rem)', re.IGNORECASE)
+def convert(m):
+    attrs = dict(attr_re.findall(m.group(1)))
+    src = attrs.get('src', '')
+    alt = attrs.get('alt', '').replace(']', '').replace('[', '')
+    style = attrs.get('style', '')
+    extras = ''
+    wm = width_re.search(style)
+    if wm:
+        val, unit = float(wm.group(1)), wm.group(2).lower()
+        if unit == 'in':
+            px = int(val * 96)
+            extras = f'{{ width="{px}" }}'
+        elif unit == 'cm':
+            px = int(val * 37.795)
+            extras = f'{{ width="{px}" }}'
+        elif unit == 'px':
+            extras = f'{{ width="{int(val)}" }}'
+        elif unit == '%':
+            extras = f'{{ width="{val}%" }}'
+    return f'![{alt}]({src}){extras}'
+p.write_text(img_re.sub(convert, text))
+PY
+}
+
+img_to_markdown "${DOCS}/index.md"
+img_to_markdown "${DOCS}/requirements.md"
+img_to_markdown "${DOCS}/architecture.md"
+
 # Strip Word's embedded TOC (pandoc preserves it as nested page-number links).
 # Match lines like "[Title 2](#anchor)" or "> [Title 2](#anchor)" inside the
 # pre-content block (between the first H1 and the next heading).
