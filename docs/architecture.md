@@ -221,4 +221,19 @@ These endpoints sit behind the Collector API Gateway and related Lambdas (e.g., 
 | GET | /collector/records/{senderId}/{ObjectType} | …then falls back to type-specific lists | Yes | — | Array | ObjectType ∈ { Job, Worker, Organization, WorkerPaidHoursReport, WorkerCompReport }. |
 | GET | /collector?senderRefId={senderId} | List log entries in Collector | Yes | — | Array (or object with Items, logs, or data) | UI handles multiple shapes and normalizes to an array. |
 
+## 
+
 ## Front-end integration notes (applies to both apps)
+
+**Auth header**: Both UIs inject Authorization: Bearer \<token\> for all protected routes. The token is read from localStorage\["auth-store"\] (either token or user.token).
+
+**Environment resolution**:
+
+- Dev uses '/api' proxy.
+
+- Prod uses VITE_CAR_BASE_URL (Sender) or VITE_COLLECTOR_BASE_URL (Collector). Fallback to BASE_URL only if set.
+
+**Object identity**: Many write paths require RefId (not business IDs). The Sender UI also displays business IDs (e.g., organizationId.value) but submissions and updates use RefId.
+
+**Type mapping** (used when submitting to Collector):\
+Job → "job", Worker → "worker", Organization → "organization", WorkerCompReport → "worker_compensation_report", WorkerPaidHoursReport → "worker_paid_hours_report".
