@@ -204,7 +204,7 @@ copy_pdf_with_wrapper() {
     cat > "${md_out}" <<EOF
 # ${title}
 
-[:material-file-pdf-box: Download original PDF](${rel}){ .md-button }
+[Download original PDF](${rel}){ .md-button }
 
 ---
 
@@ -216,7 +216,7 @@ EOF
 
 The original document is a PDF. Download it below.
 
-[:material-file-pdf-box: Download PDF](${rel}){ .md-button .md-button--primary }
+[Download PDF](${rel}){ .md-button .md-button--primary }
 EOF
   fi
 }
@@ -307,7 +307,7 @@ build_ai_package() {
       local anchor; anchor="$(filename_slug "${name}")"
       cp "${pdf}" "${ASSETS}/pdfs/${name}"
       local rel; rel="$(python3 -c "import os; print(os.path.relpath('${ASSETS}/pdfs/${name}', '${md_dir}'))")"
-      printf '## %s { #%s }\n\n[:material-file-pdf-box: Download PDF](%s){ .md-button }\n\n' "${name}" "${anchor}" "${rel}"
+      printf '## %s { #%s }\n\n[Download PDF](%s){ .md-button }\n\n' "${name}" "${anchor}" "${rel}"
     done
     for yaml in "${pkg_dir}"/*.yaml; do
       [[ -f "${yaml}" ]] || continue
@@ -432,7 +432,7 @@ for p in files:
     if desc:
         lines.append(desc.strip())
         lines.append('')
-    lines.append(f'[:material-download: Download `{p.name}`](assets/schemas/{p.name}){{ .md-button }}')
+    lines.append(f'[Download `{p.name}`](assets/schemas/{p.name}){{ .md-button }}')
     lines.append('')
 out.write_text('\n'.join(lines))
 PY
@@ -474,7 +474,7 @@ for d in subdirs:
 parts = [
     '# Sample Data',
     '',
-    '[:material-folder-zip: Download all sample data (ZIP)](assets/zips/sample-data.zip){ .md-button .md-button--primary }',
+    '[Download all sample data (ZIP)](assets/zips/sample-data.zip){ .md-button .md-button--primary }',
     '',
     readme_body,
     '## Contents',

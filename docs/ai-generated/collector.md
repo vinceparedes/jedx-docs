@@ -29,7 +29,7 @@ Record/Records/User endpoints interact with S3 and DynamoDB as appropriate.
 
 ## collector_architecture_diagram.pdf { #collector-architecture-diagram-pdf }
 
-[:material-file-pdf-box: Download PDF](../assets/pdfs/collector_architecture_diagram.pdf){ .md-button }
+[Download PDF](../assets/pdfs/collector_architecture_diagram.pdf){ .md-button }
 
 ## `template-collector.yaml` { #template-collector-yaml }
 

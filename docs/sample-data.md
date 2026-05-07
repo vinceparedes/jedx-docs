@@ -1,6 +1,6 @@
 # Sample Data
 
-[:material-folder-zip: Download all sample data (ZIP)](assets/zips/sample-data.zip){ .md-button .md-button--primary }
+[Download all sample data (ZIP)](assets/zips/sample-data.zip){ .md-button .md-button--primary }
 
 > **Note**  
 > - These are artifacts for **JEDx Phase II Pilot**  
