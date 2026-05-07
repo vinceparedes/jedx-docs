@@ -10,7 +10,7 @@ You will notice that this requirements document uses the form of “the software
 
 This document also refers to two distinct pieces of software: the Provider software and the Collector software. The Provider and Collector software communicate and share information, typically in a many (Providers) to one (Collector) arrangement. The Provider software contains a service called CAR (Collection, Aggregation, and Reporting). The collection in this context refers to the collection done by the Provider software system and not to the Collector software.
 
-## Phase II JEDx Project Overview
+### Phase II JEDx Project Overview
 
 In stage I the JEDx team created one API Test Instance that receives data. The JEDx team simulated sending data to that JEDx test instance manually, simulating what would happen in a Collection, Aggregation, and Reporting service of an employer or third party agent.
 
@@ -56,15 +56,15 @@ These diagrams provide a high-level view of how packages move through each major
 
 Figure 2. Cross-Functional Flow: Provider Sends Package to Collector
 
-![](assets/images/requirements/media/image5.png){ width="616" }
+![](assets/images/requirements/media/image2.png){ width="616" }
 
 Figure 3. Cross-Functional Flow: Collector Receives Package from Provider
 
-![](assets/images/requirements/media/image6.png){ width="582" }
+![](assets/images/requirements/media/image3.png){ width="582" }
 
 <span id="_heading=h.bjdq6inqds9" class="anchor"></span>
 
-## Technical Approach - Collector
+### Technical Approach - Collector
 
 Each instance of the modular JEDx data collector subsystem will work independently, receiving data via the JEDx API, performing basic validation, sending initial acceptance or rejection responses to the data provider, and storing the data objects with metadata about the submission and status of the data objects.
 
@@ -72,15 +72,15 @@ The data pipeline/data management subsystem (planned to be handled by the Bright
 
 Any change, such as adding SOC codes, made by the data management subsystem would trigger a function that would post those updates back to the data Provider. (In the stage 2 test the data Provider function may be handled by the Simulated CAR Service.)
 
-## JEDx Component and Process Flow Diagram
+### JEDx Component and Process Flow Diagram
 
 Figure 4: JEDx Adapter Process Flow - Provider to Collector
 
-![](assets/images/requirements/media/image3.jpg){ width="468" }
+![](assets/images/requirements/media/image4.jpg){ width="468" }
 
 ## Phase II Deliverables
 
-## Technical Deliverables
+### Technical Deliverables
 
 1.  Redeployable (via AWS SAM) JEDx API Implementation
 
@@ -88,7 +88,7 @@ Figure 4: JEDx Adapter Process Flow - Provider to Collector
 
 3.  Redeployable Agent to monitor data changes and post updated objects to the data provider source system via the JEDx API. e.g. If the state adds SOC codes the system would post that update with provenance metadata back to the source.
 
-## JEDx API Service
+### JEDx API Service
 
 1.  JEDx API CAR Integration with Collection Data Store. Modular redeployable instance of the JEDx API with Collection Data Store that can collect data in the stage 2 pilots for Arkansas, South Carolina and a multi state instance, including:
 
@@ -106,7 +106,7 @@ Figure 4: JEDx Adapter Process Flow - Provider to Collector
 
 3.  Support for Brighthive in implementing upstream ETL to the BLS sandbox according to the model developed with pilot partners
 
-## Standard Occupational Code (SOC) Lookup via Web User Interface
+### Standard Occupational Code (SOC) Lookup via Web User Interface
 
 *Develop a web interface and back-end integration with the RIPL SOCkit API that demonstrates e-submission lookup and the addition of SOC codes to the CAR Service simulated Job object data. This includes the following tasks:*
 
@@ -136,13 +136,13 @@ In both cases, the “Producer” and “Consumer” roles shown in the diagrams
 
 Figure 5: Autocoding Before Submission Workflow
 
-![](assets/images/requirements/media/image4.png){ width="624" }
+![](assets/images/requirements/media/image5.png){ width="624" }
 
 Figure 6: Autocoding After Submission (Round Trip) Workflow
 
-![](assets/images/requirements/media/image2.png){ width="624" }
+![](assets/images/requirements/media/image6.png){ width="624" }
 
-## JEDx API CAR Integration with Collector Data Store
+### JEDx API CAR Integration with Collector Data Store
 
 *In coordination with the larger QIP team, develop a modular redeployable instance of the JEDx API and support its use by Brighthive. This includes the following tasks:*
 
@@ -172,7 +172,7 @@ Figure 6: Autocoding After Submission (Round Trip) Workflow
 
 - The software will expose/utilize REST-style endpoints. It will conform to REST conventions. In addition, the transport mechanism for messages will be as specified in the SIF \[version\] infrastructure document \[link\] also known as the JEDx API
 
-## General Technical Specifications
+### General Technical Specifications
 
 1.  AWS implementation using the serverless approach.
 
@@ -208,7 +208,7 @@ The application will use Amazon Web Services (AWS) to instantiate the software. 
 
 - AWS API Gateway
 
-## Requirements Table
+### Requirements Table
 
 This is an initial pass at requirements. Others will be added during the process of specifying and developing the software. Each item description in the list below can be assumed to be prepended with “the software will …”
 
@@ -243,7 +243,7 @@ This is an initial pass at requirements. Others will be added during the process
 
 ## Appendices
 
-## Appendix A: Glossary of Terms
+### Appendix A: Glossary of Terms
 
 **BLS** - Bureau of Labor Statistics
 
@@ -268,3 +268,5 @@ This is an initial pass at requirements. Others will be added during the process
 **TPA** - Third Party Agent
 
 **Workspace** - Operationally, a US-state-based aspect of the Collector software that makes each state opaque to the others but runs in the same process space. All data will be physically separate. Also referred to as a sandbox.
+
+------------------------------------------------------------------------
