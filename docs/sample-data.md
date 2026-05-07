@@ -5,7 +5,6 @@
 > **Note**  
 > - These are artifacts for **JEDx Phase II Pilot**  
 > - Not meant for production  
-> - Questions can be sent to **Jim Goodell (jimgoodell@qi-partners.com)** and **Alex Jackl (alex@bardicsystems.com)**
 
 ---
 
