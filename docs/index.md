@@ -42,14 +42,3 @@ Before objects are sent:
 
 - after processing (logging) objects are dropped in the "output bucket" for BrightHive to pick up.
 
-## Github files
-
-All software and code documentation is stored in Github at:
-
-- <https://github.com/QIPDataHub/JEDx> - Schemas and Data Dictionary
-
-- <https://github.com/QIPDataHub/jedx-car-collector-service> - Both the CAR Service app (provider) and the Collector Service app.
-
-- <https://github.com/QIPDataHub/webui_shared_artifacts> - The CAR Service web UI and the Collector Service web UI compiled code.
-
-- <https://github.com/QIPDataHub/jedx-car-receiver-webui> - The web UI source code for both the CAR Service and the Collector Service.
