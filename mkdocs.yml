@@ -54,5 +54,5 @@ nav:
   - Home: index.md
   - Transport: transport.md
   - Orchestration: orchestration.md
-  - Schemas: schemas.md
+  - Data Model: data-model.md
   - Sample Data: sample-data.md

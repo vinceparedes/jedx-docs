@@ -1,4 +1,4 @@
-# Schemas
+# Data Model
 
 JSON Schema definitions for the JEDx data model. Each file is downloadable.
 
@@ -6,7 +6,7 @@ JSON Schema definitions for the JEDx data model. Each file is downloadable.
 
 **Central Code Sets**
 
-[Download `code-sets.json`](assets/schemas/code-sets.json){ .md-button }
+[Download `code-sets.json`](assets/data-model/code-sets.json){ .md-button }
 
 ## `job_schema.jschema`
 
@@ -14,7 +14,7 @@ JSON Schema definitions for the JEDx data model. Each file is downloadable.
 
 An ongoing role or set of responsibilities at an organization.
 
-[Download `job_schema.jschema`](assets/schemas/job_schema.jschema){ .md-button }
+[Download `job_schema.jschema`](assets/data-model/job_schema.jschema){ .md-button }
 
 ## `organization_schema.jschema`
 
@@ -22,7 +22,7 @@ An ongoing role or set of responsibilities at an organization.
 
 A legal Organization
 
-[Download `organization_schema.jschema`](assets/schemas/organization_schema.jschema){ .md-button }
+[Download `organization_schema.jschema`](assets/data-model/organization_schema.jschema){ .md-button }
 
 ## `worker_compensation_report.jschema`
 
@@ -30,7 +30,7 @@ A legal Organization
 
 Reports compensation to workers
 
-[Download `worker_compensation_report.jschema`](assets/schemas/worker_compensation_report.jschema){ .md-button }
+[Download `worker_compensation_report.jschema`](assets/data-model/worker_compensation_report.jschema){ .md-button }
 
 ## `worker_paid_hours_report.jschema`
 
@@ -38,7 +38,7 @@ Reports compensation to workers
 
 Reports hours paid to a worker.
 
-[Download `worker_paid_hours_report.jschema`](assets/schemas/worker_paid_hours_report.jschema){ .md-button }
+[Download `worker_paid_hours_report.jschema`](assets/data-model/worker_paid_hours_report.jschema){ .md-button }
 
 ## `worker_schema.jschema`
 
@@ -46,4 +46,4 @@ Reports hours paid to a worker.
 
 A person entity that works for an organization.
 
-[Download `worker_schema.jschema`](assets/schemas/worker_schema.jschema){ .md-button }
+[Download `worker_schema.jschema`](assets/data-model/worker_schema.jschema){ .md-button }

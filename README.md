@@ -24,7 +24,7 @@ Edit freely:
 
 Don't hand-edit; changes get wiped on the next build:
 
-- `docs/schemas.md` + `docs/assets/schemas/`  ← sourced from `D_Schemas/`
+- `docs/data-model.md` + `docs/assets/data-model/`  ← sourced from `D_Schemas/`
 - `docs/sample-data.md` + `docs/assets/zips/sample-data.zip`  ← sourced from `E_SampleData/`
 
 To refresh after dropping new schemas in `D_Schemas/` or updating

@@ -2,14 +2,14 @@
 # Hybrid-mode build script for jedx-docs.
 #
 # AUTHORED (build.sh NEVER touches these — edit freely):
-#   - All markdown files under docs/ EXCEPT schemas.md and sample-data.md
+#   - All markdown files under docs/ EXCEPT data-model.md and sample-data.md
 #   - All images under docs/assets/images/  (pandoc-extracted snapshots)
 #   - mkdocs.yml
 #
 # MECHANICAL (regenerated each run from ../DocumentationPackage):
-#   - docs/assets/schemas/                — D_Schemas/*.jschema, *.json
+#   - docs/assets/data-model/             — D_Schemas/*.jschema, *.json
 #   - docs/assets/zips/sample-data.zip    — E_SampleData/ packed
-#   - docs/schemas.md                     — schema listing with download buttons
+#   - docs/data-model.md                  — schema listing with download buttons
 #   - docs/sample-data.md                 — README + zip download button
 #
 # Run after dropping new schemas in D_Schemas/ or changing E_SampleData/.
@@ -24,16 +24,16 @@ ASSETS="${DOCS}/assets"
 [[ -d "${SRC}" ]] || { echo "Source dir not found: ${SRC}" >&2; exit 1; }
 
 # Reset only the mechanical paths. Leaves authored content untouched.
-rm -rf "${ASSETS}/schemas" "${ASSETS}/zips"
-rm -f "${DOCS}/schemas.md" "${DOCS}/sample-data.md"
-mkdir -p "${ASSETS}/schemas" "${ASSETS}/zips"
+rm -rf "${ASSETS}/data-model" "${ASSETS}/zips"
+rm -f "${DOCS}/data-model.md" "${DOCS}/sample-data.md"
+mkdir -p "${ASSETS}/data-model" "${ASSETS}/zips"
 
-# --- Schemas (D_Schemas) -----------------------------------------------------
+# --- Data Model (D_Schemas) --------------------------------------------------
 SCHEMAS_SRC="${SRC}/D_Schemas"
 if [[ -d "${SCHEMAS_SRC}" ]]; then
-  echo "Building schemas section..."
-  cp "${SCHEMAS_SRC}"/*.jschema "${SCHEMAS_SRC}"/*.json "${ASSETS}/schemas/" 2>/dev/null || true
-  python3 - "${SCHEMAS_SRC}" "${DOCS}/schemas.md" <<'PY'
+  echo "Building data-model section..."
+  cp "${SCHEMAS_SRC}"/*.jschema "${SCHEMAS_SRC}"/*.json "${ASSETS}/data-model/" 2>/dev/null || true
+  python3 - "${SCHEMAS_SRC}" "${DOCS}/data-model.md" <<'PY'
 import json, pathlib, sys
 src_dir = pathlib.Path(sys.argv[1])
 out = pathlib.Path(sys.argv[2])
@@ -56,7 +56,7 @@ def extract_title_desc(p):
 
 files = sorted([p for p in src_dir.iterdir() if p.suffix in ('.jschema', '.json')])
 lines = [
-    '# Schemas', '',
+    '# Data Model', '',
     'JSON Schema definitions for the JEDx data model. Each file is downloadable.', '',
 ]
 for p in files:
@@ -66,7 +66,7 @@ for p in files:
         lines.append(f'**{title}**'); lines.append('')
     if desc:
         lines.append(desc.strip()); lines.append('')
-    lines.append(f'[Download `{p.name}`](assets/schemas/{p.name}){{ .md-button }}')
+    lines.append(f'[Download `{p.name}`](assets/data-model/{p.name}){{ .md-button }}')
     lines.append('')
 out.write_text('\n'.join(lines))
 PY
