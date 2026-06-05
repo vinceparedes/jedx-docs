@@ -52,7 +52,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Requirements: requirements.md
+  - Transport: transport.md
   - Architecture: architecture.md
   - Schemas: schemas.md
   - Sample Data: sample-data.md

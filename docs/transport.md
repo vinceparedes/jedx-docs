@@ -1,4 +1,4 @@
-# JEDx Requirements
+# JEDx Transport
 
 ## Introduction
 
@@ -18,7 +18,7 @@ In stage II we are simulating sending data to simulated state collector systems 
 
 This data flow is shown in Figure 1 below. Each data provider will need a Collection, Aggregation, and Reporting (CAR) service to package and send the simulated data via the JEDx API. The creation of a CAR service may impose a burden on TPAs and integrators that are still exploring their interest in joining the JEDx initiative. To mitigate this burden, this project will create a simulated CAR service that can be used by multiple TPAs to send data via the JEDx API.
 
-Figure 1: JEDx Stage 2 Pilot Data Flow![](assets/images/requirements/media/image1.png){ width="663" }
+Figure 1: JEDx Stage 2 Pilot Data Flow![](assets/images/transport/media/image1.png){ width="663" }
 
 > In addition, during the course of the JEDx project up to and including the stage one pilot, the JEDx team recognized the need for additional architectural capabilities to support pilot partners in the implementation of the sandbox instances envisioned for the stage two pilot. For example, the following additional needs emerged through our planning with the partner states and BLS:
 
@@ -56,11 +56,11 @@ These diagrams provide a high-level view of how packages move through each major
 
 Figure 2. Cross-Functional Flow: Provider Sends Package to Collector
 
-![](assets/images/requirements/media/image2.png){ width="616" }
+![](assets/images/transport/media/image2.png){ width="616" }
 
 Figure 3. Cross-Functional Flow: Collector Receives Package from Provider
 
-![](assets/images/requirements/media/image3.png){ width="582" }
+![](assets/images/transport/media/image3.png){ width="582" }
 
 <span id="_heading=h.bjdq6inqds9" class="anchor"></span>
 
@@ -76,7 +76,7 @@ Any change, such as adding SOC codes, made by the data management subsystem woul
 
 Figure 4: JEDx Adapter Process Flow - Provider to Collector
 
-![](assets/images/requirements/media/image4.jpg){ width="468" }
+![](assets/images/transport/media/image4.jpg){ width="468" }
 
 ## Phase II Deliverables
 
@@ -136,11 +136,11 @@ In both cases, the “Producer” and “Consumer” roles shown in the diagrams
 
 Figure 5: Autocoding Before Submission Workflow
 
-![](assets/images/requirements/media/image5.png){ width="624" }
+![](assets/images/transport/media/image5.png){ width="624" }
 
 Figure 6: Autocoding After Submission (Round Trip) Workflow
 
-![](assets/images/requirements/media/image6.png){ width="624" }
+![](assets/images/transport/media/image6.png){ width="624" }
 
 ### JEDx API CAR Integration with Collector Data Store
 
