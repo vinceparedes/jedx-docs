@@ -53,6 +53,6 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Transport: transport.md
-  - Architecture: architecture.md
+  - Orchestration: orchestration.md
   - Schemas: schemas.md
   - Sample Data: sample-data.md

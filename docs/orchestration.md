@@ -1,4 +1,4 @@
-# JEDx AWS Architecture
+# JEDx Orchestration
 
 ## Introduction
 
@@ -12,7 +12,7 @@ This document also refers to two distinct pieces of software: the Provider softw
 
 The following diagram illustrates the high-level AWS architectural components that are used to support the JEDx Phase II AWS Infrastructure. This document details the architecture to support the Car Service and Collector – JEDx Adapter. The Brighthive Workspace is an external service connected to this architecture through S3 buckets.
 
-![A screenshot of a computer AI-generated content may be incorrect.](assets/images/architecture/media/image1.png){ width="624" }
+![A screenshot of a computer AI-generated content may be incorrect.](assets/images/orchestration/media/image1.png){ width="624" }
 
 ------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ Aws Simple Storage Service (S3) is an object storage service provided by AWS. JE
 
 The following diagram details the components that make up the CAR Service for Phase II.
 
-![](assets/images/architecture/media/image2.png){ width="333" }
+![](assets/images/orchestration/media/image2.png){ width="333" }
 
 The car service is a collection of AWS components and code to support the ingestion of JEDx records, validation and the submission to the collector service.
 
@@ -151,7 +151,7 @@ NOTE: These calls go to a *separate* service and are **<u>not</u>** part of CAR/
 
 The following diagram details the components that make up the Collector Service for Phase II.
 
-![A screenshot of a computer AI-generated content may be incorrect.](assets/images/architecture/media/image3.png){ width="278" }
+![A screenshot of a computer AI-generated content may be incorrect.](assets/images/orchestration/media/image3.png){ width="278" }
 
 The collector service is a collection of AWS components and code to support the ingestion of JEDx records, and validation.
 
