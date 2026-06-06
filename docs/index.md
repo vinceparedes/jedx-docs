@@ -18,8 +18,6 @@ This site is made up of three main sections
 
 - object/files are automatically fed into pipeline, schemas are validated, objects are put into send bucket or into an error bucket.
 
-<!-- -->
-
 - Nothing is done with the Error objects for now (pilot state).
 
 - Send bucket items are not sent immediately at this time. Sending will be done by the UI, by automation in the future.

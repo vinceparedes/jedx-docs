@@ -2,11 +2,9 @@
 
 ## Introduction
 
-This document focuses on AWS infrastructure and software components to support the JEDx phase II development.
+We are building a componentized software system that allows users to quickly integrate with the JEDx ecosystem.
 
-We will be building a componentized software system that allows users to quickly integrate with the JEDx ecosystem.
-
-This document also refers to two distinct pieces of software: the Provider software also known as the CAR service and the Collector software also known as the JEDx Adapter. The Provider and Collector software communicate and share information, typically in a many (Providers) to one (Collector) arrangement. The Provider software contains a service called CAR (Collection, Aggregation, and Reporting). The collection in this context refers to the collection done by the Provider software system and not to the Collector software.
+This document refers to two distinct pieces of software: the CAR (Centralized Audit Repository) software and the Collector software. The CAR and Collector software communicate and share information, typically in a many to one (Collector) arrangement.
 
 ## Phase II JEDx AWS Infrastructure Overview
 
