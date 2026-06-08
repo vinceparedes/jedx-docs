@@ -14,7 +14,7 @@ The following diagram illustrates the high-level AWS architectural components th
 
 ------------------------------------------------------------------------
 
-Note: Components to integrate with Brighthive and Collector Update back to CAR Service not implemented as part of Phase II
+Note: Components to integrate with Brighthive and Collector Update back to CAR Service not implemented as part of Phase II (pilot). 
 
 ### Cognito
 
