@@ -2,15 +2,14 @@
 # Hybrid-mode build script for jedx-docs.
 #
 # AUTHORED (build.sh NEVER touches these — edit freely):
-#   - All markdown files under docs/ EXCEPT data-model.md and sample-data.md
+#   - All markdown files under docs/ EXCEPT data-model.md
 #   - All images under docs/assets/images/  (pandoc-extracted snapshots)
 #   - mkdocs.yml
 #
 # MECHANICAL (regenerated each run from ../DocumentationPackage):
 #   - docs/assets/data-model/             — D_Schemas/*.jschema, *.json
 #   - docs/assets/zips/sample-data.zip    — E_SampleData/ packed
-#   - docs/data-model.md                  — schema listing with download buttons
-#   - docs/sample-data.md                 — README + zip download button
+#   - docs/data-model.md                  — combined schemas listing + Sample Data subsection
 #
 # Run after dropping new schemas in D_Schemas/ or changing E_SampleData/.
 
@@ -25,18 +24,33 @@ ASSETS="${DOCS}/assets"
 
 # Reset only the mechanical paths. Leaves authored content untouched.
 rm -rf "${ASSETS}/data-model" "${ASSETS}/zips"
-rm -f "${DOCS}/data-model.md" "${DOCS}/sample-data.md"
+rm -f "${DOCS}/data-model.md"
 mkdir -p "${ASSETS}/data-model" "${ASSETS}/zips"
 
-# --- Data Model (D_Schemas) --------------------------------------------------
+# --- Data Model (D_Schemas + E_SampleData combined) --------------------------
+# Single page: schemas listing followed by a "Sample Data" subsection that
+# includes the README and a zip download button.
 SCHEMAS_SRC="${SRC}/D_Schemas"
+SAMPLE_SRC="${SRC}/E_SampleData"
+
+echo "Building data-model section..."
+
+# Copy schemas to assets.
 if [[ -d "${SCHEMAS_SRC}" ]]; then
-  echo "Building data-model section..."
   cp "${SCHEMAS_SRC}"/*.jschema "${SCHEMAS_SRC}"/*.json "${ASSETS}/data-model/" 2>/dev/null || true
-  python3 - "${SCHEMAS_SRC}" "${DOCS}/data-model.md" <<'PY'
+fi
+
+# Build sample-data.zip if source exists.
+if [[ -d "${SAMPLE_SRC}" ]]; then
+  (cd "${SRC}" && zip -rq "${ASSETS}/zips/sample-data.zip" "E_SampleData" -x "*.DS_Store" -x "E_SampleData/README.md")
+fi
+
+# Emit the combined markdown page.
+python3 - "${SCHEMAS_SRC}" "${SAMPLE_SRC}" "${DOCS}/data-model.md" <<'PY'
 import json, pathlib, sys
-src_dir = pathlib.Path(sys.argv[1])
-out = pathlib.Path(sys.argv[2])
+schemas_dir = pathlib.Path(sys.argv[1])
+sample_dir  = pathlib.Path(sys.argv[2])
+out         = pathlib.Path(sys.argv[3])
 
 def extract_title_desc(p):
     try:
@@ -54,64 +68,47 @@ def extract_title_desc(p):
                     break
     return title, desc
 
-files = sorted([p for p in src_dir.iterdir() if p.suffix in ('.jschema', '.json')])
 lines = [
     '# Data Model', '',
     'JSON Schema definitions for the JEDx data model. Each file is downloadable.', '',
 ]
-for p in files:
-    title, desc = extract_title_desc(p)
-    lines.append(f'## `{p.name}`'); lines.append('')
-    if title:
-        lines.append(f'**{title}**'); lines.append('')
-    if desc:
-        lines.append(desc.strip()); lines.append('')
-    lines.append(f'[Download `{p.name}`](assets/data-model/{p.name}){{ .md-button }}')
-    lines.append('')
+
+# --- Schemas -----------------------------------------------------------------
+if schemas_dir.exists():
+    files = sorted([p for p in schemas_dir.iterdir() if p.suffix in ('.jschema', '.json')])
+    for p in files:
+        title, desc = extract_title_desc(p)
+        lines.append(f'## `{p.name}`'); lines.append('')
+        if title:
+            lines.append(f'**{title}**'); lines.append('')
+        if desc:
+            lines.append(desc.strip()); lines.append('')
+        lines.append(f'[Download `{p.name}`](assets/data-model/{p.name}){{ .md-button }}')
+        lines.append('')
+
+# --- Sample Data (appended subsection) ---------------------------------------
+if sample_dir.exists():
+    lines += ['## Sample Data', '',
+              '[Download all sample data (ZIP)](assets/zips/sample-data.zip){ .md-button .md-button--primary }',
+              '']
+    readme = sample_dir / 'README.md'
+    if readme.exists():
+        body = readme.read_text().splitlines()
+        if body and body[0].startswith('# '):
+            body = body[1:]
+        while body and not body[0].strip():
+            body = body[1:]
+        if body:
+            lines += body + ['']
+    subdirs = sorted([d for d in sample_dir.iterdir() if d.is_dir()])
+    if subdirs:
+        lines += ['### Contents', '']
+        for d in subdirs:
+            n = sum(1 for p in d.iterdir() if p.is_file() and not p.name.startswith('.'))
+            lines.append(f'- **{d.name}/** — {n} files')
+        lines.append('')
+
 out.write_text('\n'.join(lines))
 PY
-else
-  echo "  (skipped, ${SCHEMAS_SRC} not found)"
-fi
-
-# --- Sample Data (E_SampleData) ---------------------------------------------
-SAMPLE_SRC="${SRC}/E_SampleData"
-if [[ -d "${SAMPLE_SRC}" ]]; then
-  echo "Building sample-data section..."
-  ZIP_OUT="${ASSETS}/zips/sample-data.zip"
-  (cd "${SRC}" && zip -rq "${ZIP_OUT}" "E_SampleData" -x "*.DS_Store" -x "E_SampleData/README.md")
-  python3 - "${SAMPLE_SRC}" "${DOCS}/sample-data.md" <<'PY'
-import pathlib, sys
-src_dir = pathlib.Path(sys.argv[1])
-out = pathlib.Path(sys.argv[2])
-readme = src_dir / 'README.md'
-readme_body = ''
-if readme.exists():
-    text = readme.read_text().splitlines()
-    if text and text[0].startswith('# '):
-        text = text[1:]
-    while text and not text[0].strip():
-        text = text[1:]
-    readme_body = '\n'.join(text).rstrip() + '\n'
-
-subdirs = sorted([d for d in src_dir.iterdir() if d.is_dir()])
-contents_lines = []
-for d in subdirs:
-    n = sum(1 for p in d.iterdir() if p.is_file() and not p.name.startswith('.'))
-    contents_lines.append(f'- **{d.name}/** — {n} files')
-
-parts = [
-    '# Sample Data', '',
-    '[Download all sample data (ZIP)](assets/zips/sample-data.zip){ .md-button .md-button--primary }',
-    '',
-    readme_body,
-    '## Contents', '',
-    *contents_lines, '',
-]
-out.write_text('\n'.join(parts))
-PY
-else
-  echo "  (skipped, ${SAMPLE_SRC} not found)"
-fi
 
 echo "Done."

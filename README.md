@@ -24,8 +24,9 @@ Edit freely:
 
 Don't hand-edit; changes get wiped on the next build:
 
-- `docs/data-model.md` + `docs/assets/data-model/`  ← sourced from `D_Schemas/`
-- `docs/sample-data.md` + `docs/assets/zips/sample-data.zip`  ← sourced from `E_SampleData/`
+- `docs/data-model.md`  ← combined page sourced from `D_Schemas/` (schemas listing) and `E_SampleData/` (Sample Data subsection at the bottom)
+- `docs/assets/data-model/`  ← schema files copied from `D_Schemas/`
+- `docs/assets/zips/sample-data.zip`  ← packed from `E_SampleData/`
 
 To refresh after dropping new schemas in `D_Schemas/` or updating
 `E_SampleData/`:
